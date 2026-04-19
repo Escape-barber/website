@@ -1,5 +1,3 @@
-<!-- FloatButtons Widget - https://github.com/liveupx/Floating-Calls-Social-Buttons-for-Website-free -->
-<script>
 (function(){
   var cfg={"buttons":[{"type":"phone","url":"tel:01554006321","label":"Call Us","color":"#e2e9e7","icon":"📞"},{"type":"instagram","url":"https://instagram.com/escape_barber","label":"Instagram","color":"#833ab4","icon":"📷"},{"type":"whatsapp","url":"https://wa.me/201554006321","label":"WhatsApp","color":"#25d366","icon":"💬"},{"type":"maps","url":"https://maps.google.com/?q=Escape%20barbershop,%20gate%202,%20eterna,%20New%20Cairo%201,%20Cairo%20Governorate%2011835","label":"Location","color":"#4285f4","icon":"📍"}],"style":{"mainColor":"#000000","mainIconColor":"#ffffff","subColor":"#1e1e24","subTextColor":"#ffffff","position":"bottom-right","offsetX":24,"offsetY":24,"buttonSize":"medium","expandDirection":"up","mainIcon":"chat","showLabels":true,"pulseAnimation":true,"showTooltip":false}};
   var s=document.createElement('style');
@@ -47,5 +45,3 @@
   };
   document.addEventListener('click',function(e){if(!w.contains(e.target))w.classList.remove('open'),icon.style.transform=''});
 })();
-</script>
-<!-- End FloatButtons Widget -->
