@@ -1,136 +1,127 @@
-window.addEventListener("DOMContentLoaded", function () {
+(function () {
 
-  var cfg = {
-    buttons: [
-      {
-        type: "phone",
-        url: "tel:01554006321",
-        label: "Call Us",
-        color: "#e2e9e7",
-        icon: "📞"
-      },
-      {
-        type: "instagram",
-        url: "https://instagram.com/escape_barber",
-        label: "Instagram",
-        color: "#833ab4",
-        icon: "📷"
-      },
-      {
-        type: "whatsapp",
-        url: "https://wa.me/201554006321",
-        label: "WhatsApp",
-        color: "#25d366",
-        icon: "💬"
-      },
-      {
-        type: "maps",
-        url: "https://maps.google.com/?q=Escape%20barbershop",
-        label: "Location",
-        color: "#4285f4",
-        icon: "📍"
+  window.addEventListener("DOMContentLoaded", function () {
+
+    var cfg = {
+      buttons: [
+        {
+          type: "phone",
+          url: "tel:01554006321",
+          label: "Call Us",
+          color: "#000000",
+          icon: "📞"
+        },
+        {
+          type: "instagram",
+          url: "https://instagram.com/escape_barber",
+          label: "Instagram",
+          color: "#833ab4",
+          icon: "📷"
+        },
+        {
+          type: "whatsapp",
+          url: "https://wa.me/201554006321",
+          label: "WhatsApp",
+          color: "#25d366",
+          icon: "💬"
+        },
+        {
+          type: "maps",
+          url: "https://maps.google.com/?q=Escape%20barbershop,%20gate%202,%20eterna,%20New%20Cairo%201,%20Cairo%20Governorate%2011835",
+          label: "Location",
+          color: "#4285f4",
+          icon: "📍"
+        }
+      ],
+      style: {
+        mainColor: "#000000",
+        mainIconColor: "#ffffff",
+        position: "bottom-right",
+        offsetX: 24,
+        offsetY: 24,
+        showLabels: true
       }
-    ],
-    style: {
-      mainColor: "#000000",
-      mainIconColor: "#ffffff",
-      position: "bottom-right",
-      offsetX: 24,
-      offsetY: 24,
-      buttonSize: "medium",
-      expandDirection: "up",
-      mainIcon: "chat",
-      showLabels: true,
-      pulseAnimation: true
-    }
-  };
+    };
 
-  // ===== CSS =====
-  var s = document.createElement("style");
-  s.textContent = `
-    .fb-widget{
-      position:fixed;
-      z-index:999999;
-      font-family: Arial, sans-serif;
-    }
+    // ===== CSS =====
+    var style = document.createElement("style");
+    style.textContent = `
+      .fb-widget{
+        position:fixed;
+        bottom:${cfg.style.offsetY}px;
+        right:${cfg.style.offsetX}px;
+        z-index:999999;
+        font-family:Arial;
+        display:flex;
+        flex-direction:column;
+        align-items:flex-end;
+        gap:10px;
+      }
 
-    .fb-widget.bottom-right{
-      bottom:${cfg.style.offsetY}px;
-      right:${cfg.style.offsetX}px;
-    }
+      .fb-fab{
+        width:56px;
+        height:56px;
+        border-radius:50%;
+        border:none;
+        background:${cfg.style.mainColor};
+        color:${cfg.style.mainIconColor};
+        font-size:22px;
+        cursor:pointer;
+        box-shadow:0 4px 20px rgba(0,0,0,0.3);
+      }
 
-    .fb-fab{
-      width:${cfg.style.buttonSize === "small" ? 48 : cfg.style.buttonSize === "large" ? 64 : 56}px;
-      height:${cfg.style.buttonSize === "small" ? 48 : cfg.style.buttonSize === "large" ? 64 : 56}px;
-      border-radius:50%;
-      border:none;
-      cursor:pointer;
-      background:${cfg.style.mainColor};
-      color:${cfg.style.mainIconColor};
-      font-size:22px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      box-shadow:0 4px 20px rgba(0,0,0,0.3);
-    }
+      .fb-buttons{
+        display:none;
+        flex-direction:column;
+        gap:10px;
+      }
 
-    .fb-buttons{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      margin-bottom:10px;
-      opacity:0;
-      visibility:hidden;
-      transform:translateY(10px);
-      transition:0.3s;
-    }
+      .fb-widget.open .fb-buttons{
+        display:flex;
+      }
 
-    .fb-widget.open .fb-buttons{
-      opacity:1;
-      visibility:visible;
-      transform:translateY(0);
-    }
+      .fb-btn{
+        display:flex;
+        align-items:center;
+        gap:8px;
+        padding:10px 14px;
+        border-radius:30px;
+        color:#fff;
+        text-decoration:none;
+        font-size:14px;
+        white-space:nowrap;
+      }
+    `;
+    document.head.appendChild(style);
 
-    .fb-btn{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      padding:10px 14px;
-      border-radius:30px;
-      text-decoration:none;
-      color:#fff;
-      font-size:14px;
-      white-space:nowrap;
-    }
-  `;
-  document.head.appendChild(s);
+    // ===== HTML =====
+    var widget = document.createElement("div");
+    widget.className = "fb-widget";
 
-  // ===== HTML =====
-  var w = document.createElement("div");
-  w.className = "fb-widget bottom-right";
+    widget.innerHTML = `
+      <div class="fb-buttons">
+        ${cfg.buttons.map(function (b) {
+          return `
+            <a href="${b.url}" target="_blank" class="fb-btn" style="background:${b.color}">
+              <span>${b.icon}</span>
+              ${cfg.style.showLabels ? `<span>${b.label}</span>` : ""}
+            </a>
+          `;
+        }).join("")}
+      </div>
 
-  w.innerHTML = `
-    <div class="fb-buttons">
-      ${cfg.buttons.map(function (b, i) {
-        return `
-          <a href="${b.url}" target="_blank" class="fb-btn" style="background:${b.color}">
-            <span>${b.icon}</span>
-            ${cfg.style.showLabels ? `<span>${b.label}</span>` : ""}
-          </a>
-        `;
-      }).join("")}
-    </div>
+      <button class="fb-fab">💬</button>
+    `;
 
-    <button class="fb-fab">💬</button>
-  `;
+    document.body.appendChild(widget);
 
-  document.body.appendChild(w);
+    // ===== Toggle =====
+    var fab = widget.querySelector(".fb-fab");
 
-  // ===== Toggle =====
-  var fab = w.querySelector(".fb-fab");
+    fab.onclick = function () {
+      widget.classList.toggle("open");
+    };
 
-  fab.onclick = function () {
-    w.classList.toggle("open");
-  };
+  });
 
-});
+})();
